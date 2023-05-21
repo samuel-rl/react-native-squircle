@@ -37,6 +37,11 @@
   },
   "keywords": [
     "react-native",
+    "react-native-squircle",
+    "squircle",
+    "skia",
+    "expo",
+    "typescript",
     "ios",
     "android"
   ],
