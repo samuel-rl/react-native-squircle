@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native';
 
-import { Canvas, Mask, Path } from '@shopify/react-native-skia';
+import { Canvas, Color, Mask, Path } from '@shopify/react-native-skia';
 import { drawSquirclePath } from '../utils/functions';
 import type { StyleProp } from 'react-native';
 import type { ViewStyle } from 'react-native';
@@ -18,7 +18,7 @@ interface SquircleProps {
    *
    * @default #FFFFFF
    */
-  backgroundColor?: string;
+  backgroundColor?: Color;
 
   /**
    * The higher the value, the smoother the border.
