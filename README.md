@@ -19,7 +19,7 @@ yarn add react-native-squircle
 For expo:
 
 ```sh
-expo install react-native-squircle
+npx expo install react-native-squircle
 ```
 
 ## Example
