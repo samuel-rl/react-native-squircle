@@ -47,6 +47,48 @@ const MyComponent = () => {
   );
 };
 ```
+Draw a Squircle inside a Squircle
+
+```js
+import Squircle, { drawSquirclePath } from 'react-native-squircle';
+
+const WIDTH = 200;
+const HEIGHT = 180;
+const BORDER = 6;
+const BORDER_RADIUS = 30;
+const SMOOTHING = 1;
+
+// ...
+
+const MyComponent = () => {
+
+  // Compute your inside Squircle path
+  const insidePath = useMemo(() => {
+    return drawSquirclePath({
+      borderSmoothing: SMOOTHING,
+      borderRadius: BORDER_RADIUS - BORDER,
+      width: WIDTH - BORDER * 2,
+      height: HEIGHT - BORDER * 2,
+    });
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Squircle
+        style={styleSheetSize(WIDTH, HEIGHT)}
+        borderRadius={BORDER_RADIUS}
+        maskChildren={<Fill color="#B70404" />}
+        skiaChildren={
+          <Group>
+            <Offset x={BORDER} y={BORDER} />
+            <Path path={insidePath} color={'#AFD3E2'} />
+          </Group>
+        }
+      />
+    </View>
+  );
+};
+```
 
 The `Squircle` component take these following props:
 
@@ -62,8 +104,8 @@ The `Squircle` component take these following props:
     <td><code>borderRadius</code></td>
     <td><code>number</code></td>
     <td>The radius of the squircle.</td>
-    <td>✅</td>
-    <td><code>undefined</code></td>
+    <td>❌</td>
+    <td><code>16</code></td>
   </tr>
    <tr>
     <td><code>backgroundColor</code></td>
@@ -88,8 +130,15 @@ The `Squircle` component take these following props:
   </tr>
   <tr>
     <td><code>maskChildren</code></td>
-    <td><code>Skia node that will be masked by the squircle.<code></td>
-    <td>Counter value should decrease or increase.</td>
+    <td><code>React.ReactNode | React.ReactNode[]<code></td>
+    <td>Skia node that will be masked by the squircle.</td>
+    <td>❌</td>
+    <td><code>undefined</code></td>
+  </tr>
+  <tr>
+    <td><code>skiaChildren</code></td>
+    <td><code>React.ReactNode | React.ReactNode[]<code></td>
+    <td>Skia node that will be draw inside the Skia Canvas.</td>
     <td>❌</td>
     <td><code>undefined</code></td>
   </tr>
