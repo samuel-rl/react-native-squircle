@@ -47,7 +47,8 @@ const MyComponent = () => {
   );
 };
 ```
-Draw a Squircle inside a Squircle
+
+### Draw a Squircle inside a Squircle:
 
 ```js
 import Squircle, { drawSquirclePath } from 'react-native-squircle';
@@ -89,6 +90,10 @@ const MyComponent = () => {
   );
 };
 ```
+
+<div align="center">
+  <img align="center" src="https://github.com/samuel-rl/react-native-squircle/assets/44348413/064cdc75-d22d-467d-aae8-cfbdd37ed913" alt="Squircle border" />
+</div>
 
 The `Squircle` component take these following props:
 
