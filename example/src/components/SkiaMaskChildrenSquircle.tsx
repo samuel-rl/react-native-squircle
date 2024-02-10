@@ -1,14 +1,32 @@
 import {
+  Fill,
+  Group,
   Image,
   LinearGradient,
+  Mask,
+  Offset,
+  Path,
   Rect,
   SweepGradient,
   useImage,
   vec,
 } from '@shopify/react-native-skia';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import Squircle from 'react-native-squircle';
+import Squircle, { drawSquirclePath } from 'react-native-squircle';
+
+const EXAMPLE_1_WIDTH = 200;
+const EXAMPLE_1_HEIGHT = 180;
+const EXAMPLE_1_BORDER = 3;
+const EXAMPLE_1_BORDER_RADIUS = 30;
+const EXAMPLE_1_BORDER_SMOOTHING = 1;
+
+const EXAMPLE_2_WIDTH = 200;
+const EXAMPLE_2_HEIGHT = 180;
+const EXAMPLE_2_BORDER = 10;
+const EXAMPLE_2_BORDER_RADIUS = 28;
+const EXAMPLE_2_BORDER_SMOOTHING = 1;
+const EXAMPLE_2_INNER_BORDER = 10;
 
 const styleSheetSize = (width: number, height: number) => {
   return {
@@ -39,8 +57,97 @@ const SkiaMaskChildrenSquircle = () => {
   const image2 = useImage(require('../../assets/image2.jpg'));
   const image3 = useImage(require('../../assets/image3.jpg'));
 
+  const insidePath1 = useMemo(() => {
+    return drawSquirclePath({
+      borderSmoothing: EXAMPLE_1_BORDER_SMOOTHING,
+      borderRadius: EXAMPLE_1_BORDER_RADIUS - EXAMPLE_1_BORDER,
+      width: EXAMPLE_1_WIDTH - EXAMPLE_1_BORDER * 2,
+      height: EXAMPLE_1_HEIGHT - EXAMPLE_1_BORDER * 2,
+    });
+  }, []);
+
+  const insidePath2 = useMemo(() => {
+    return drawSquirclePath({
+      borderSmoothing: EXAMPLE_2_BORDER_SMOOTHING,
+      borderRadius: EXAMPLE_2_BORDER_RADIUS - EXAMPLE_2_BORDER,
+      width: EXAMPLE_2_WIDTH - EXAMPLE_2_BORDER * 2,
+      height: EXAMPLE_2_HEIGHT - EXAMPLE_2_BORDER * 2,
+    });
+  }, []);
+
+  const insidePath2Inner = useMemo(() => {
+    return drawSquirclePath({
+      borderSmoothing: EXAMPLE_2_BORDER_SMOOTHING,
+      borderRadius:
+        EXAMPLE_2_BORDER_RADIUS - EXAMPLE_2_BORDER - EXAMPLE_2_INNER_BORDER,
+      width:
+        EXAMPLE_2_WIDTH - EXAMPLE_2_BORDER * 2 - EXAMPLE_2_INNER_BORDER * 2,
+      height:
+        EXAMPLE_2_HEIGHT - EXAMPLE_2_BORDER * 2 - EXAMPLE_2_INNER_BORDER * 2,
+    });
+  }, []);
+
   return (
     <ScrollView horizontal contentContainerStyle={styles.container}>
+      <Squircle
+        style={styleSheetSize(EXAMPLE_1_WIDTH, EXAMPLE_1_HEIGHT)}
+        borderRadius={EXAMPLE_1_BORDER_RADIUS}
+        maskChildren={<Fill color="#FF6969" />}
+        skiaChildren={
+          <Group>
+            <Offset x={EXAMPLE_1_BORDER} y={EXAMPLE_1_BORDER} />
+            <Path path={insidePath1} color={'#AFD3E2'} />
+          </Group>
+        }
+      />
+      <Squircle
+        style={styleSheetSize(EXAMPLE_2_WIDTH, EXAMPLE_2_HEIGHT)}
+        borderRadius={EXAMPLE_2_BORDER_RADIUS}
+        maskChildren={
+          <Rect x={0} y={0} width={EXAMPLE_2_WIDTH} height={EXAMPLE_2_HEIGHT}>
+            <LinearGradient
+              start={vec(0, 0)}
+              end={vec(EXAMPLE_2_WIDTH, EXAMPLE_2_HEIGHT)}
+              colors={['#FF6969', '#A6D0DD']}
+            />
+          </Rect>
+        }
+        skiaChildren={
+          <Group>
+            <Offset x={EXAMPLE_2_BORDER} y={EXAMPLE_2_BORDER} />
+            {image1 && (
+              <Mask mask={<Path path={insidePath2} />}>
+                {image1 && (
+                  <Image width={230} height={190} image={image1!} fit="cover" />
+                )}
+              </Mask>
+            )}
+            <Group>
+              <Offset
+                x={EXAMPLE_2_BORDER + EXAMPLE_2_INNER_BORDER}
+                y={EXAMPLE_2_BORDER + EXAMPLE_2_INNER_BORDER}
+              />
+              <Mask mask={<Path path={insidePath2Inner} color={'green'} />}>
+                <Rect
+                  x={0}
+                  y={0}
+                  width={EXAMPLE_2_WIDTH}
+                  height={EXAMPLE_2_HEIGHT}
+                >
+                  <LinearGradient
+                    start={vec(EXAMPLE_2_BORDER, EXAMPLE_2_HEIGHT)}
+                    end={vec(
+                      EXAMPLE_2_WIDTH - EXAMPLE_2_BORDER,
+                      EXAMPLE_2_HEIGHT
+                    )}
+                    colors={['#FFED00', 'red']}
+                  />
+                </Rect>
+              </Mask>
+            </Group>
+          </Group>
+        }
+      />
       {image1 && (
         <Squircle
           style={styleSheetSize(230, 190)}

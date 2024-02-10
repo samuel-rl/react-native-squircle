@@ -14,10 +14,10 @@ const DefaultSquircle = () => {
   return (
     <ScrollView horizontal contentContainerStyle={styles.container}>
       <View style={styleSheetSize(140, 140)}>
-        <Squircle borderRadius={20} backgroundColor="#B70404" />
+        <Squircle backgroundColor="#B70404" />
       </View>
       <View style={styleSheetSize(130, 100)}>
-        <Squircle borderRadius={29} backgroundColor="#F79327" />
+        <Squircle backgroundColor="#F79327" />
       </View>
       <View style={styleSheetSize(140, 130)}>
         <Squircle borderRadius={12} backgroundColor="#B799FF" />
